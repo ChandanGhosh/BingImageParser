@@ -4,9 +4,9 @@ namespace BingImageParser
 {
     public class RootObject
     {
-        public List<Image> images { get; set; }
+        public List<Image> images;
 
-        public Tooltips tooltips { get; set; }
+        public Tooltips tooltips;
     }
 
     public enum Style

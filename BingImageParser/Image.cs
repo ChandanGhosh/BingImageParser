@@ -4,32 +4,32 @@ namespace BingImageParser
 {
     public class Image
     {
-        public string startdate { get; set; }
+        public string startdate;
 
-        public string fullstartdate { get; set; }
+        public string fullstartdate;
 
-        public string enddate { get; set; }
+        public string enddate;
 
-        public string url { get; set; }
+        public string url;
 
-        public string urlbase { get; set; }
+        public string urlbase;
 
-        public string copyright { get; set; }
+        public string copyright;
 
-        public string copyrightlink { get; set; }
+        public string copyrightlink;
 
-        public string quiz { get; set; }
+        public string quiz;
 
-        public bool wp { get; set; }
+        public bool wp;
 
-        public string hsh { get; set; }
+        public string hsh;
 
-        public int drk { get; set; }
+        public int drk;
 
-        public int top { get; set; }
+        public int top;
 
-        public int bot { get; set; }
+        public int bot;
 
-        public List<object> hs { get; set; }
+        public List<object> hs;
     }
 }
