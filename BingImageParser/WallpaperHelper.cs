@@ -3,6 +3,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -46,7 +47,7 @@ namespace BingImageParser
 
         private static void SetWallpaperForWindows(string folderPath, string imageName, Style style)
         {
-            var lpvParam = Path.Combine(folderPath, $"{ImageName}.bmp");
+            var lpvParam = Path.Combine(folderPath, imageName);
 
             //using (var img = System.Drawing.Image.FromFile(Path.Combine(folderPath, imageName)))
             //{
@@ -167,7 +168,7 @@ namespace BingImageParser
         {
             if (!Directory.Exists(WallpaperFolderPath))
                 Directory.CreateDirectory(WallpaperFolderPath);
-            ImageName = wallpaperUrl.Split('/').LastOrDefault();
+            ImageName = wallpaperUrl.Split('/').LastOrDefault()?.Replace(".jpg", ".bmp");
             using (var client = new HttpClient())
             {
                 if (!File.Exists(Path.Combine(WallpaperFolderPath, ImageName)))
@@ -178,6 +179,20 @@ namespace BingImageParser
                 
             }
             SetWallPaper(WallpaperFolderPath, ImageName, Style.Fill);
+
+            DeleteOldWallpapers(WallpaperFolderPath, ImageName);
+        }
+
+        private static void DeleteOldWallpapers(string wallpaperFolderPath, string imageName)
+        {
+            if (Directory.Exists(wallpaperFolderPath))
+            {
+                foreach (var fileName in Directory.EnumerateFiles(wallpaperFolderPath))
+                {
+                    if(fileName.Contains(ImageName)==false)
+                        File.Delete(fileName);
+                }
+            }
         }
     }
 }
