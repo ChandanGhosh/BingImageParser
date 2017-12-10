@@ -28,19 +28,15 @@ namespace BingImageParser
         public static void SetWallPaper(string folderPath, string imageName, Style style)
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
                 SetWallpaperForWindows(folderPath, imageName, style);
-            }
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
                 SetWallpaperForOsx(folderPath, imageName, style);
-            }
         }
+
         //ToDo: Implement for mac os
         private static void SetWallpaperForOsx(string folderPath, string imageName, Style style)
         {
-
         }
 
         private static void SetWallpaperForWindows(string folderPath, string imageName, Style style)
@@ -60,87 +56,87 @@ namespace BingImageParser
                 switch (style)
                 {
                     case Style.Fill:
-                        {
-                            var registryKey2 = registryKey1;
-                            num = 10;
-                            var str1 = num.ToString();
-                            registryKey2.SetValue(name1, str1);
-                            var registryKey3 = registryKey1;
-                            num = 0;
-                            var str2 = num.ToString();
-                            registryKey3.SetValue(name2, str2);
-                            break;
-                        }
+                    {
+                        var registryKey2 = registryKey1;
+                        num = 10;
+                        var str1 = num.ToString();
+                        registryKey2.SetValue(name1, str1);
+                        var registryKey3 = registryKey1;
+                        num = 0;
+                        var str2 = num.ToString();
+                        registryKey3.SetValue(name2, str2);
+                        break;
+                    }
                     case Style.Fit:
-                        {
-                            var registryKey2 = registryKey1;
+                    {
+                        var registryKey2 = registryKey1;
 
-                            num = 6;
-                            var str1 = num.ToString();
-                            registryKey2.SetValue(name1, str1);
-                            var registryKey3 = registryKey1;
+                        num = 6;
+                        var str1 = num.ToString();
+                        registryKey2.SetValue(name1, str1);
+                        var registryKey3 = registryKey1;
 
-                            num = 0;
-                            var str2 = num.ToString();
-                            registryKey3.SetValue(name2, str2);
-                            break;
-                        }
+                        num = 0;
+                        var str2 = num.ToString();
+                        registryKey3.SetValue(name2, str2);
+                        break;
+                    }
                     case Style.Span:
-                        {
-                            var registryKey2 = registryKey1;
+                    {
+                        var registryKey2 = registryKey1;
 
-                            num = 22;
-                            var str1 = num.ToString();
-                            registryKey2.SetValue(name1, str1);
-                            var registryKey3 = registryKey1;
+                        num = 22;
+                        var str1 = num.ToString();
+                        registryKey2.SetValue(name1, str1);
+                        var registryKey3 = registryKey1;
 
-                            num = 0;
-                            var str2 = num.ToString();
-                            registryKey3.SetValue(name2, str2);
-                            break;
-                        }
+                        num = 0;
+                        var str2 = num.ToString();
+                        registryKey3.SetValue(name2, str2);
+                        break;
+                    }
                     case Style.Stretch:
-                        {
-                            var registryKey2 = registryKey1;
+                    {
+                        var registryKey2 = registryKey1;
 
-                            num = 2;
-                            var str1 = num.ToString();
-                            registryKey2.SetValue(name1, str1);
-                            var registryKey3 = registryKey1;
+                        num = 2;
+                        var str1 = num.ToString();
+                        registryKey2.SetValue(name1, str1);
+                        var registryKey3 = registryKey1;
 
-                            num = 0;
-                            var str2 = num.ToString();
-                            registryKey3.SetValue(name2, str2);
-                            break;
-                        }
+                        num = 0;
+                        var str2 = num.ToString();
+                        registryKey3.SetValue(name2, str2);
+                        break;
+                    }
                     case Style.Tile:
-                        {
-                            var registryKey2 = registryKey1;
+                    {
+                        var registryKey2 = registryKey1;
 
-                            num = 0;
-                            var str1 = num.ToString();
-                            registryKey2.SetValue(name1, str1);
-                            var registryKey3 = registryKey1;
+                        num = 0;
+                        var str1 = num.ToString();
+                        registryKey2.SetValue(name1, str1);
+                        var registryKey3 = registryKey1;
 
-                            num = 1;
-                            var str2 = num.ToString();
-                            registryKey3.SetValue(name2, str2);
-                            break;
-                        }
+                        num = 1;
+                        var str2 = num.ToString();
+                        registryKey3.SetValue(name2, str2);
+                        break;
+                    }
                     case Style.Center:
-                        {
-                            var registryKey2 = registryKey1;
+                    {
+                        var registryKey2 = registryKey1;
 
-                            num = 0;
-                            var str1 = num.ToString();
-                            registryKey2.SetValue(name1, str1);
-                            var registryKey3 = registryKey1;
+                        num = 0;
+                        var str1 = num.ToString();
+                        registryKey2.SetValue(name1, str1);
+                        var registryKey3 = registryKey1;
 
-                            num = 0;
-                            var str2 = num.ToString();
-                            registryKey3.SetValue(name2, str2);
-                            break;
-                        }
+                        num = 0;
+                        var str2 = num.ToString();
+                        registryKey3.SetValue(name2, str2);
+                        break;
+                    }
                     default:
                         throw new ArgumentOutOfRangeException(nameof(style), style, null);
                 }
@@ -155,7 +151,8 @@ namespace BingImageParser
             {
                 var str1 = await client.GetStringAsync(new Uri($"{BaseUri}{ServiceUri}", UriKind.RelativeOrAbsolute));
                 var str2 = str1.Substring(str1.IndexOf('{'));
-                var rootObject = JsonConvert.DeserializeObject<RootObject>(str2.Substring(0, str2.LastIndexOf('}') + 1));
+                var rootObject =
+                    JsonConvert.DeserializeObject<RootObject>(str2.Substring(0, str2.LastIndexOf('}') + 1));
                 if (rootObject.images.FirstOrDefault() == null)
                     return;
                 await SaveWallpaper(rootObject.images.First().url);
@@ -172,9 +169,9 @@ namespace BingImageParser
                 if (!File.Exists(Path.Combine(WallpaperFolderPath, imageName)))
                     using (var imageStream = await client.GetStreamAsync(new Uri($"{BaseUri}{wallpaperUrl}")))
                     {
-                        System.Drawing.Image.FromStream(imageStream).Save(Path.Combine(WallpaperFolderPath, imageName), ImageFormat.Bmp);
+                        System.Drawing.Image.FromStream(imageStream).Save(Path.Combine(WallpaperFolderPath, imageName),
+                            ImageFormat.Bmp);
                     }
-                
             }
             SetWallPaper(WallpaperFolderPath, imageName, Style.Fill);
 
@@ -184,13 +181,9 @@ namespace BingImageParser
         private static void DeleteOldWallpapers(string wallpaperFolderPath, string imageName)
         {
             if (Directory.Exists(wallpaperFolderPath))
-            {
                 foreach (var fileName in Directory.EnumerateFiles(wallpaperFolderPath))
-                {
-                    if(fileName.Contains(imageName)==false)
+                    if (fileName.Contains(imageName) == false)
                         File.Delete(fileName);
-                }
-            }
         }
     }
 }

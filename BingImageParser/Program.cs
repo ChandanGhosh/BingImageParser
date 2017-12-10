@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BingImageParser
 {
-    static class Program
+    internal static class Program
     {
         private static CancellationTokenSource _cts;
 
@@ -15,9 +15,7 @@ namespace BingImageParser
                 Console.CancelKeyPress += (s, e) =>
                 {
                     if (e.SpecialKey == ConsoleSpecialKey.ControlC)
-                    {
                         _cts?.Cancel();
-                    }
                 };
 
 
@@ -29,7 +27,6 @@ namespace BingImageParser
         private static async Task GetWallpaper(CancellationTokenSource token)
         {
             while (!token.IsCancellationRequested)
-            {
                 try
                 {
                     Console.WriteLine("Get images in json from bing.com");
@@ -42,9 +39,6 @@ namespace BingImageParser
                     Console.WriteLine($"Exception occured: {exception.Message}");
                     await Task.Delay(30, token.Token);
                 }
-                
-            }
         }
-
     }
 }

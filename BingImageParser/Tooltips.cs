@@ -2,14 +2,14 @@
 {
     public class Tooltips
     {
-        public string loading ;
+        public string loading;
 
-        public string previous ;
+        public string next;
 
-        public string next ;
+        public string previous;
 
-        public string walle ;
+        public string walle;
 
-        public string walls ;
+        public string walls;
     }
 }
