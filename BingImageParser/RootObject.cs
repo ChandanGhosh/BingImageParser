@@ -16,6 +16,6 @@ namespace BingImageParser
         Span,
         Stretch,
         Tile,
-        Center,
+        Center
     }
 }

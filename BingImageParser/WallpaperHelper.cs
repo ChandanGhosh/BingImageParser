@@ -153,7 +153,7 @@ namespace BingImageParser
         {
             using (var client = new HttpClient())
             {
-                var str1 = await client.GetStringAsync(new Uri(string.Format("{0}{1}", BaseUri, ServiceUri), UriKind.RelativeOrAbsolute));
+                var str1 = await client.GetStringAsync(new Uri($"{BaseUri}{ServiceUri}", UriKind.RelativeOrAbsolute));
                 var str2 = str1.Substring(str1.IndexOf('{'));
                 var rootObject = JsonConvert.DeserializeObject<RootObject>(str2.Substring(0, str2.LastIndexOf('}') + 1));
                 if (rootObject.images.FirstOrDefault() == null)

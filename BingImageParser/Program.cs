@@ -30,10 +30,19 @@ namespace BingImageParser
         {
             while (!token.IsCancellationRequested)
             {
-                Console.WriteLine("Get images in json from bing.com");
-                await WallpaperHelper.GetWallpaper();
-                Console.WriteLine("Image downloaded and set as wallpaper from bing");
-                await Task.Delay(TimeSpan.FromSeconds(10), token.Token);
+                try
+                {
+                    Console.WriteLine("Get images in json from bing.com");
+                    await WallpaperHelper.GetWallpaper();
+                    Console.WriteLine("Image downloaded and set as wallpaper from bing");
+                    await Task.Delay(TimeSpan.FromSeconds(20), token.Token);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine($"Exception occured: {exception.Message}");
+                    await Task.Delay(30, token.Token);
+                }
+                
             }
         }
 
