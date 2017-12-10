@@ -3,9 +3,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -19,7 +17,7 @@ namespace BingImageParser
         private const int SpifSendwininichange = 2;
         private const string BaseUri = "https://www.bing.com";
         private const string ServiceUri = "/HPImageArchive.aspx?format=hp&idx=0&n=1";
-        public static string ImageName;
+        
 
         public static string WallpaperFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "temp");
 
@@ -39,7 +37,7 @@ namespace BingImageParser
                 SetWallpaperForOsx(folderPath, imageName, style);
             }
         }
-
+        //ToDo: Implement for mac os
         private static void SetWallpaperForOsx(string folderPath, string imageName, Style style)
         {
 
@@ -168,19 +166,19 @@ namespace BingImageParser
         {
             if (!Directory.Exists(WallpaperFolderPath))
                 Directory.CreateDirectory(WallpaperFolderPath);
-            ImageName = wallpaperUrl.Split('/').LastOrDefault()?.Replace(".jpg", ".bmp");
+            var imageName = wallpaperUrl.Split('/').LastOrDefault()?.Replace(".jpg", ".bmp");
             using (var client = new HttpClient())
             {
-                if (!File.Exists(Path.Combine(WallpaperFolderPath, ImageName)))
+                if (!File.Exists(Path.Combine(WallpaperFolderPath, imageName)))
                     using (var imageStream = await client.GetStreamAsync(new Uri($"{BaseUri}{wallpaperUrl}")))
                     {
-                        System.Drawing.Image.FromStream(imageStream).Save(Path.Combine(WallpaperFolderPath, ImageName), ImageFormat.Bmp);
+                        System.Drawing.Image.FromStream(imageStream).Save(Path.Combine(WallpaperFolderPath, imageName), ImageFormat.Bmp);
                     }
                 
             }
-            SetWallPaper(WallpaperFolderPath, ImageName, Style.Fill);
+            SetWallPaper(WallpaperFolderPath, imageName, Style.Fill);
 
-            DeleteOldWallpapers(WallpaperFolderPath, ImageName);
+            DeleteOldWallpapers(WallpaperFolderPath, imageName);
         }
 
         private static void DeleteOldWallpapers(string wallpaperFolderPath, string imageName)
@@ -189,7 +187,7 @@ namespace BingImageParser
             {
                 foreach (var fileName in Directory.EnumerateFiles(wallpaperFolderPath))
                 {
-                    if(fileName.Contains(ImageName)==false)
+                    if(fileName.Contains(imageName)==false)
                         File.Delete(fileName);
                 }
             }
