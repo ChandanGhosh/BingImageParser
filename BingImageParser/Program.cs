@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BingImageParser
 {
-    class Program
+    static class Program
     {
         private static CancellationTokenSource _cts;
 

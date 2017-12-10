@@ -10,16 +10,16 @@ using Newtonsoft.Json;
 
 namespace BingImageParser
 {
-    internal sealed class WallpaperHelper
+    internal static class WallpaperHelper
     {
         private const int SpiSetdeskwallpaper = 20;
         private const int SpifUpdateinifile = 1;
         private const int SpifSendwininichange = 2;
         private const string BaseUri = "https://www.bing.com";
         private const string ServiceUri = "/HPImageArchive.aspx?format=hp&idx=0&n=1";
-        
 
-        public static string WallpaperFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "temp");
+        private static readonly string WallpaperFolderPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "temp");
 
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
