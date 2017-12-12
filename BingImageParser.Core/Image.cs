@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BingImageParser
+namespace BingImageParser.Core
 {
     public class Image
     {

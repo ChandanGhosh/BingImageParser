@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 
-namespace BingImageParser
+namespace BingImageParser.Core
 {
-    internal static class WallpaperHelper
+    public static class WallpaperHelper
     {
         private const int SpiSetdeskwallpaper = 20;
         private const int SpifUpdateinifile = 1;
