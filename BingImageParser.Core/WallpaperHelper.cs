@@ -7,28 +7,56 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using Plugin.Connectivity;
+
 
 namespace BingImageParser.Core
 {
     public static class WallpaperHelper
     {
         private const int SpiSetdeskwallpaper = 20;
+        private const int SPI_GETDESKWALLPAPER = 73;
+        private const int MAX_PATH = 256;
         private const int SpifUpdateinifile = 1;
         private const int SpifSendwininichange = 2;
         private const string BaseUri = "https://www.bing.com";
         private const string ServiceUri = "/HPImageArchive.aspx?format=hp&idx=0&n=1";
-
         private static readonly string WallpaperFolderPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "temp");
+
+        public static bool TodaysWallpaperAlreadySet
+        {
+            get
+            {
+                if (!Directory.Exists(WallpaperFolderPath)) Directory.CreateDirectory(WallpaperFolderPath);
+
+                return Directory.EnumerateFiles(WallpaperFolderPath).Any(fileName =>
+                    new FileInfo(fileName).CreationTime.Date == DateTime.Today.Date &&
+                    GetCurrentDesktopWallpaper(fileName));
+            }
+        }
 
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
 
+
+        public static bool GetCurrentDesktopWallpaper(string fileName)
+        {
+            using (var key = Registry.CurrentUser.OpenSubKey("Control Panel\\Desktop", false))
+            {
+                var filePath = key.GetValue("WallPaper").ToString();
+                return File.Exists(filePath) && filePath == fileName;
+            }   
+        }
+
         public static void SetWallPaper(string folderPath, string imageName, Style style)
         {
+            
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
                 SetWallpaperForWindows(folderPath, imageName, style);
+            }
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 SetWallpaperForOsx(folderPath, imageName, style);
@@ -39,7 +67,7 @@ namespace BingImageParser.Core
         {
         }
 
-        private static void SetWallpaperForWindows(string folderPath, string imageName, Style style)
+        private static int SetWallpaperForWindows(string folderPath, string imageName, Style style)
         {
             var lpvParam = Path.Combine(folderPath, imageName);
 
@@ -47,6 +75,7 @@ namespace BingImageParser.Core
             //{
             //    img.Save(lpvParam, ImageFormat.Bmp);
             //}
+
 
             using (var registryKey1 = Registry.CurrentUser.OpenSubKey("Control Panel\\Desktop", true))
             {
@@ -141,22 +170,28 @@ namespace BingImageParser.Core
                         throw new ArgumentOutOfRangeException(nameof(style), style, null);
                 }
 
-                SystemParametersInfo(SpiSetdeskwallpaper, 0, lpvParam, SpifSendwininichange | SpifUpdateinifile);
+                 return SystemParametersInfo(SpiSetdeskwallpaper, 0, lpvParam, SpifSendwininichange | SpifUpdateinifile);
             }
         }
 
         public static async Task GetWallpaper()
         {
-            using (var client = new HttpClient())
+            if (CrossConnectivity.IsSupported && CrossConnectivity.Current.IsConnected &&
+                await CrossConnectivity.Current.IsRemoteReachable(new Uri(BaseUri), TimeSpan.FromSeconds(2)))
             {
-                var str1 = await client.GetStringAsync(new Uri($"{BaseUri}{ServiceUri}", UriKind.RelativeOrAbsolute));
-                var str2 = str1.Substring(str1.IndexOf('{'));
-                var rootObject =
-                    JsonConvert.DeserializeObject<RootObject>(str2.Substring(0, str2.LastIndexOf('}') + 1));
-                if (rootObject.images.FirstOrDefault() == null)
-                    return;
-                await SaveWallpaper(rootObject.images.First().url);
-            }
+                using (var client = new HttpClient())
+                {
+                    var str1 = await client.GetStringAsync(
+                        new Uri($"{BaseUri}{ServiceUri}", UriKind.RelativeOrAbsolute));
+                    var str2 = str1.Substring(str1.IndexOf('{'));
+                    var rootObject =
+                        JsonConvert.DeserializeObject<RootObject>(str2.Substring(0, str2.LastIndexOf('}') + 1));
+                    if (rootObject.images.FirstOrDefault() == null)
+                        return;
+                    await SaveWallpaper(rootObject.images.First().url);
+
+                }
+            }            
         }
 
         public static async Task SaveWallpaper(string wallpaperUrl)
@@ -164,26 +199,33 @@ namespace BingImageParser.Core
             if (!Directory.Exists(WallpaperFolderPath))
                 Directory.CreateDirectory(WallpaperFolderPath);
             var imageName = wallpaperUrl.Split('/').LastOrDefault()?.Replace(".jpg", ".bmp");
-            using (var client = new HttpClient())
-            {
-                if (!File.Exists(Path.Combine(WallpaperFolderPath, imageName)))
-                    using (var imageStream = await client.GetStreamAsync(new Uri($"{BaseUri}{wallpaperUrl}")))
-                    {
-                        System.Drawing.Image.FromStream(imageStream).Save(Path.Combine(WallpaperFolderPath, imageName),
-                            ImageFormat.Bmp);
-                    }
-            }
-            SetWallPaper(WallpaperFolderPath, imageName, Style.Fill);
 
-            DeleteOldWallpapers(WallpaperFolderPath, imageName);
+            if (CrossConnectivity.IsSupported && CrossConnectivity.Current.IsConnected &&
+                await CrossConnectivity.Current.IsRemoteReachable(new Uri(BaseUri), TimeSpan.FromSeconds(10)))
+            {
+                using (var client = new HttpClient())
+                {
+                    if (!File.Exists(Path.Combine(WallpaperFolderPath, imageName)))
+                        using (var imageStream = await client.GetStreamAsync(new Uri($"{BaseUri}{wallpaperUrl}")))
+                        {
+                            System.Drawing.Image.FromStream(imageStream).Save(Path.Combine(WallpaperFolderPath, imageName),
+                                ImageFormat.Bmp);
+                        }
+                }
+                SetWallPaper(WallpaperFolderPath, imageName, Style.Fill);
+
+                DeleteOldWallpapers(WallpaperFolderPath, imageName);
+            }
+
+                
         }
 
         private static void DeleteOldWallpapers(string wallpaperFolderPath, string imageName)
         {
-            if (Directory.Exists(wallpaperFolderPath))
-                foreach (var fileName in Directory.EnumerateFiles(wallpaperFolderPath))
-                    if (fileName.Contains(imageName) == false)
-                        File.Delete(fileName);
+            if (!Directory.Exists(wallpaperFolderPath)) return;
+            foreach (var fileName in Directory.EnumerateFiles(wallpaperFolderPath))
+                if (fileName.Contains(imageName) == false)
+                    File.Delete(fileName);
         }
     }
 }
