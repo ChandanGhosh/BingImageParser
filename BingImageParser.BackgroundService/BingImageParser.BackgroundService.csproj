@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
+    <Authors>Chandan Ghosh</Authors>
+    <Company>ghosh.com</Company>
+    <Description>Hobby Project - Cross Platform Bing Image fetcher</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BingImageParser.Core\BingImageParser.Core.csproj" />
+  </ItemGroup>
+
+</Project>

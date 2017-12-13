@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BingImageParser.Core", "Bin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BingImageParser.Console", "BingImageParser.Console\BingImageParser.Console.csproj", "{C53FB675-5135-4196-9B8B-48C1A4BC6CF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BingImageParser.WinService", "BingImageParser.WinService\BingImageParser.WinService.csproj", "{DD9D0517-E50C-4DE2-8F22-361EBDE08C96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BingImageParser.WindowsService", "BingImageParser.WindowsService\BingImageParser.WindowsService.csproj", "{19BFABA2-E5B1-4964-9F92-E63839A84727}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BingImageParser.BackgroundService", "BingImageParser.BackgroundService\BingImageParser.BackgroundService.csproj", "{24544C26-6138-40B5-8A6D-058E2F4AFC31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +25,14 @@ Global
 		{C53FB675-5135-4196-9B8B-48C1A4BC6CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C53FB675-5135-4196-9B8B-48C1A4BC6CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C53FB675-5135-4196-9B8B-48C1A4BC6CF5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD9D0517-E50C-4DE2-8F22-361EBDE08C96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD9D0517-E50C-4DE2-8F22-361EBDE08C96}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD9D0517-E50C-4DE2-8F22-361EBDE08C96}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD9D0517-E50C-4DE2-8F22-361EBDE08C96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19BFABA2-E5B1-4964-9F92-E63839A84727}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19BFABA2-E5B1-4964-9F92-E63839A84727}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19BFABA2-E5B1-4964-9F92-E63839A84727}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19BFABA2-E5B1-4964-9F92-E63839A84727}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24544C26-6138-40B5-8A6D-058E2F4AFC31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24544C26-6138-40B5-8A6D-058E2F4AFC31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24544C26-6138-40B5-8A6D-058E2F4AFC31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24544C26-6138-40B5-8A6D-058E2F4AFC31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
