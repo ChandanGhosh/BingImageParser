@@ -71,11 +71,6 @@ namespace BingImageParser.Core
         {
             var lpvParam = Path.Combine(folderPath, imageName);
 
-            //using (var img = System.Drawing.Image.FromFile(Path.Combine(folderPath, imageName)))
-            //{
-            //    img.Save(lpvParam, ImageFormat.Bmp);
-            //}
-
 
             using (var registryKey1 = Registry.CurrentUser.OpenSubKey("Control Panel\\Desktop", true))
             {
