@@ -1,2 +1,2 @@
 # BingImageParser
-sets desktop wallpaper by downloading from bing in a cross platform way
+Sets desktop wallpaper by downloading from bing in a cross platform way
